@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String     @id @default(uuid())
+  email         String     @unique
+  passwordHash  String
+  phone         String?
+  address       String?
+  role          String     @default("OWNER") // "OWNER" or "ADMIN"
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  
+  properties    Property[]
+}
+
+model SignUpRequest {
+  id            String     @id @default(uuid())
+  email         String     @unique
+  phone         String
+  address       String
+  passwordHash  String
+  status        String     @default("PENDING") // "PENDING", "APPROVED", "REJECTED"
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Property {
+  id               String    @id @default(uuid())
+  ownerId          String
+  address          String    @unique
+  description      String
+  bedrooms         Int?
+  bathrooms        Int?
+  rentWholeHouse   Boolean   @default(false)
+  rentIndividually Boolean   @default(false)
+  wholeHouseRent   Float?
+  isRented         Boolean   @default(false)
+  walkingMinutesToCsun Int?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  
+  owner            User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  rooms            Room[]
+  media            Media[]
+  bookings         Booking[]
+}
+
+model Room {
+  id          String    @id @default(uuid())
+  propertyId  String
+  description String
+  rent        Float
+  leaseTerm   String?
+  isSharing   Boolean   @default(false)
+  isRented    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  media       Media[]
+  bookings    Booking[]
+}
+
+model Media {
+  id         String     @id @default(uuid())
+  entityType String     // "PROPERTY" or "ROOM"
+  propertyId String?
+  roomId     String?
+  url        String
+  createdAt  DateTime   @default(now())
+
+  property   Property?  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  room       Room?      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+}
+
+model Booking {
+  id              String    @id @default(uuid())
+  propertyId      String
+  roomId          String?
+  studentEmail    String
+  status          String    @default("PENDING") // "PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"
+  studentName     String?
+  studentPhone    String?
+  budget          String?
+  requirements    String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  room            Room?     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+}
