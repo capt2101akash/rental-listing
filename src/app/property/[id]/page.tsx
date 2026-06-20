@@ -60,9 +60,9 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                 {property.bathrooms ? <span>🛁 {property.bathrooms} Bathrooms</span> : null}
               </div>
 
-              <p style={{ color: "var(--text-muted)", fontSize: "1.125rem", lineHeight: 1.7 }}>
+              <div style={{ color: "var(--text-muted)", fontSize: "1.1rem", lineHeight: 1.8, whiteSpace: "pre-wrap", backgroundColor: "var(--surface)", padding: "1.5rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)" }}>
                 {property.description}
-              </p>
+              </div>
             </div>
             
             {property.rentWholeHouse && (

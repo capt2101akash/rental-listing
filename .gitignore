@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.*
+*.log*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
@@ -19,6 +20,7 @@
 
 # production
 /build
+/test-results/*
 
 # misc
 .DS_Store

@@ -35,8 +35,11 @@ export default async function RoomDetailsPage({ params }: { params: Promise<{ id
         
         <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.5rem" }}>
           <div style={{ flex: "1 1 300px", minWidth: "min(100%, 250px)" }}>
-            <h1 className="heading-lg" style={{ marginBottom: "0.5rem" }}>{room.description}</h1>
-            <p style={{ color: "var(--text-muted)" }}>at {room.property.address}</p>
+            <h1 className="heading-lg" style={{ marginBottom: "0.5rem" }}>Room Details</h1>
+            <p style={{ color: "var(--text-muted)", marginBottom: "1.5rem" }}>at {room.property.address}</p>
+            <div style={{ color: "var(--text-main)", fontSize: "1.05rem", lineHeight: 1.8, whiteSpace: "pre-wrap", backgroundColor: "var(--surface)", padding: "1.5rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)" }}>
+              {room.description}
+            </div>
           </div>
           <div style={{ textAlign: "right", flex: "1 1 200px" }}>
             <div className="heading-md text-gradient">${room.rent}/mo</div>
